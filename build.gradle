@@ -1,12 +1,17 @@
 plugins {
     id 'java'
     id 'jacoco'
+    id 'application'
 }
 
 sourceCompatibility = 11
 
 repositories {
     mavenCentral()
+}
+
+application {
+    mainClassName = 'com.dbtask.Application'
 }
 
 dependencies {
