@@ -48,7 +48,20 @@ class ApplicationTest {
 
     @Disabled
     @Test
-    void regularShowcase() throws InterruptedException {
+    void regularShowcaseWithRealDb() throws InterruptedException {
+        Application.main(EMPTY_ARGS);
+        Thread.sleep(WAIT);
+    }
+
+    @Disabled
+    @Test
+    void regularShowcaseWithMockDb() throws InterruptedException {
+        MongoCollection<Document> collection = mock(MongoCollection.class);
+        doNothing()
+                .when(collection)
+                .insertOne(any());
+        Application.setWriterPrinter(new DbWriterPrinter(collection));
+
         Application.main(EMPTY_ARGS);
         Thread.sleep(WAIT);
     }
