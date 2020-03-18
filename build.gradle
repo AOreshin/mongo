@@ -1,0 +1,46 @@
+plugins {
+    id 'java'
+    id 'jacoco'
+}
+
+sourceCompatibility = 11
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "org.mongodb:mongo-java-driver:${mongoJavaDriver}"
+    implementation "com.typesafe:config:${configVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${jupiterVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-engine:${jupiterVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-params:${jupiterVersion}"
+    testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
+}
+
+test {
+    useJUnitPlatform()
+
+    systemProperties['junit.jupiter.execution.parallel.enabled'] = true
+    systemProperties['junit.jupiter.execution.parallel.mode.default'] = 'concurrent'
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination file("${buildDir}/jacocoHtml")
+    }
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 1.0
+            }
+        }
+    }
+}
