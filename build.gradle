@@ -11,7 +11,7 @@ repositories {
 }
 
 application {
-    mainClassName = 'com.dbtask.Application'
+    mainClassName = "${className}"
 }
 
 dependencies {
@@ -47,5 +47,18 @@ jacocoTestCoverageVerification {
                 minimum = 1.0
             }
         }
+    }
+}
+
+jar {
+    manifest {
+        attributes(
+            'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
+            'Main-Class': "${className}"
+        )
+    }
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
